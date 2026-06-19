@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..850;1,400..850&family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "EB Garamond", Georgia, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  
+  --color-primary: #1a1a1a;
+  --color-secondary: #777777;
+  --color-background: #fdfcfb;
+  --color-on-background: #1a1a1a;
+  --color-surface: #fdfcfb;
+  --color-surface-dim: #ece9e4;
+  --color-surface-variant: #ece9e4;
+  --color-surface-container: #f7f6f4;
+  --color-surface-container-high: #f2efeb;
+  --color-surface-container-highest: #ece9e4;
+  --color-outline-variant: #e2dfdb;
+  --color-on-surface-variant: #555555;
+}
+
+body {
+  background-color: #fdfcfb;
+  color: #1a1a1a;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom scrollbars for modal overlay */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom active-link indicator animation */
+.underline-hover {
+  position: relative;
+}
+.underline-hover::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 1px;
+  bottom: -4px;
+  left: 0;
+  background-color: var(--color-primary);
+  transform-origin: bottom left;
+  transition: transform 0.25s ease-out;
+}
+.underline-hover:hover::after {
+  transform: scaleX(1);
+}
+
