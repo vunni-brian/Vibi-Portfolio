@@ -4,6 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Brian Vunni — Graphic Designer</title>
+<meta property="og:title" content="Brian Vunni — Graphic Designer" />
+<meta property="og:description" content="Crafting considered visual identities and digital experiences for brands that want to stand apart. Based in Kampala, working worldwide." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://vibi.design" />
+<meta property="og:image" content="https://vibi.design/og-image.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="description" content="Crafting considered visual identities and digital experiences for brands that want to stand apart. Based in Kampala, working worldwide." />
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 
@@ -387,6 +394,34 @@
   .empty-state p { margin-bottom: 0.5rem; font-size: 1.1rem; }
   .empty-state small { font-size: 0.85rem; font-family: var(--mono); }
 
+  /* ── FILTERS ── */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+  .filter-btn {
+    padding: 0.45rem 1rem;
+    border: 1.5px solid var(--border);
+    border-radius: 2rem;
+    background: none;
+    font-family: var(--body);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--grey);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .filter-btn:hover { border-color: var(--rose); color: var(--rose); }
+  .filter-btn.active {
+    background: var(--ink);
+    color: var(--white);
+    border-color: var(--ink);
+  }
+  .project-card.hidden { display: none; }
+
   /* ── SERVICES ── */
   #services { max-width: 1100px; margin: 0 auto; }
   .services-grid {
@@ -501,6 +536,28 @@
     display: flex; align-items: center; justify-content: center;
   }
   .admin-fab:hover { background: var(--rose); transform: scale(1.1); }
+
+  /* ── BACK TO TOP ── */
+  .back-top {
+    position: fixed;
+    bottom: 5rem; right: 2rem;
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--white);
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    z-index: 150;
+    opacity: 0;
+    transform: translateY(12px);
+    pointer-events: none;
+    transition: opacity 0.3s, transform 0.3s, background 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .back-top.visible { opacity: 0.7; transform: translateY(0); pointer-events: auto; }
+  .back-top.visible:hover { opacity: 1; background: var(--rose); }
+  @media (max-width: 768px) { .back-top { right: 1.5rem; bottom: 4.5rem; } }
 
   /* ── MODAL BASE ── */
   .modal-overlay {
@@ -951,6 +1008,7 @@
   <p class="section-label reveal">Portfolio</p>
   <h2 class="section-title reveal reveal-delay-1">Selected Work</h2>
   <p class="section-sub reveal reveal-delay-2">Projects I'm proud of. Click any card to learn more.</p>
+  <div class="filter-bar" id="filterBar"></div>
   <div class="projects-grid" id="projectsGrid">
     <!-- populated by JS -->
   </div>
@@ -1026,6 +1084,9 @@
     <div id="projectModalContent"></div>
   </div>
 </div>
+
+<!-- BACK TO TOP -->
+<button class="back-top" id="backTop" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <!-- ADMIN FAB -->
 <button class="admin-fab" id="adminFab" title="Admin Panel">⚙️</button>
@@ -1375,9 +1436,33 @@ async function seedDefaults() {
 }
 
 // ─── RENDER ───────────────────────────────────────────────────
+let _activeFilter = 'All';
+
+function renderFilters() {
+  const bar = document.getElementById('filterBar');
+  const projects = getProjects();
+  const cats = ['All', ...new Set(projects.map(p => p.cat).filter(Boolean))];
+  bar.innerHTML = cats.map(c => `
+    <button class="filter-btn ${c === _activeFilter ? 'active' : ''}" onclick="setFilter('${c}')">${c}</button>
+  `).join('');
+}
+
+function setFilter(cat) {
+  _activeFilter = cat;
+  renderFilters();
+  const cards = document.querySelectorAll('#projectsGrid .project-card');
+  cards.forEach(card => {
+    if (cat === 'All') { card.classList.remove('hidden'); return; }
+    const id = parseInt(card.dataset.id);
+    const p = getProjects().find(pr => pr.id === id);
+    card.classList.toggle('hidden', p && p.cat !== cat);
+  });
+}
+
 function renderProjects() {
   const grid = document.getElementById('projectsGrid');
   const projects = getProjects();
+  renderFilters();
   if (projects.length === 0) {
     grid.innerHTML = `
       <div class="empty-state">
@@ -1387,7 +1472,7 @@ function renderProjects() {
     return;
   }
   grid.innerHTML = projects.map((p, i) => `
-    <div class="project-card reveal ${i < 2 ? 'reveal-delay-' + (i + 1) : ''}" data-id="${p.id}" onclick="openProjectModal(${p.id})" style="transition-delay:${i * 0.1}s">
+    <div class="project-card reveal ${i < 2 ? 'reveal-delay-' + (i + 1) : ''} ${_activeFilter !== 'All' && p.cat !== _activeFilter ? 'hidden' : ''}" data-id="${p.id}" onclick="openProjectModal(${p.id})" style="transition-delay:${i * 0.1}s">
       ${p.img
         ? `<img src="${p.img}" class="project-thumb" alt="${p.title}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" /><div class="project-thumb-placeholder" style="display:none;">🎨</div>`
         : `<div class="project-thumb-placeholder">🎨</div>`
@@ -1707,7 +1792,10 @@ function switchTab(name) {
 
 // ─── NAV ──────────────────────────────────────────────────────
 window.addEventListener('scroll', () => {
-  document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 40);
+  const nav = document.getElementById('mainNav');
+  const y = window.scrollY;
+  nav.classList.toggle('scrolled', y > 40);
+  document.getElementById('backTop').classList.toggle('visible', y > 500);
 });
 
 document.getElementById('hamburger').addEventListener('click', () => {
