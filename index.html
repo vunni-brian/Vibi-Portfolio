@@ -838,6 +838,20 @@
   }
   .upload-clear:hover { background: #ffebee; }
 </style>
+<script>
+(function() {
+  var now = new Date();
+  var start = new Date(now.getFullYear(), 0, 0);
+  var dayOfYear = Math.floor((now - start) / 86400000);
+  var hue = (dayOfYear * 1.3 + 110) % 360;
+  var r = document.documentElement;
+  r.style.setProperty('--rose',   'hsl(' + hue + ', 28%, 52%)');
+  r.style.setProperty('--bg',     'hsl(' + hue + ', 12%, 97%)');
+  r.style.setProperty('--border', 'hsl(' + hue + ', 8%, 87%)');
+  r.style.setProperty('--grey',   'hsl(' + hue + ', 8%, 42%)');
+  r.style.setProperty('--sand',   'hsl(' + hue + ', 14%, 87%)');
+})();
+</script>
 </head>
 <body>
 
@@ -1194,7 +1208,6 @@
   </div>
 </div>
 
-<script>
 // ─── SUPABASE ─────────────────────────────────────────────────
 const SUPABASE_URL = 'https://zzxzejaadftxlxbrrokq.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_FnCeVt2d8VN5o02pGIEoAg_YjL9eygs';
