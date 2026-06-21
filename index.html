@@ -1055,14 +1055,15 @@
             <p id="ejSaved" style="color:#388e3c; font-size:0.82rem; display:none;">✓ Keys saved! Reload the page to activate.</p>
           </div>
         </div>
-        <p style="font-size:0.9rem; color:var(--grey); margin-bottom:1rem;">Change your admin password.</p>
+        <p style="font-size:0.9rem; color:var(--grey); margin-bottom:0.3rem;">Change your admin password.</p>
+        <p style="font-size:0.82rem; color:var(--grey); margin-bottom:1rem;">Current password: <code id="currentPassDisplay" style="font-family:var(--mono); background:var(--bg); padding:0.15rem 0.5rem; border-radius:4px;"></code></p>
         <div class="field">
           <label>New Password</label>
-          <input type="password" id="newPass" placeholder="Enter new password" />
+          <input type="text" id="newPass" placeholder="Enter new password" />
         </div>
         <div class="field">
           <label>Confirm Password</label>
-          <input type="password" id="confirmPass" placeholder="Confirm new password" />
+          <input type="text" id="confirmPass" placeholder="Confirm new password" />
         </div>
         <p id="passError" style="color:#e57373; font-size:0.85rem; display:none;"></p>
         <button class="btn-add" onclick="changePassword()">Update Password</button>
@@ -1106,20 +1107,24 @@ function getInbox() { return _data.inbox; }
 
 // ─── SUPABASE CRUD HELPERS ─────────────────────────────────────
 async function sbInsert(table, item) {
-  const { data } = await sb.from(table).insert({ ...item, id: undefined }).select().single();
+  const { data, error } = await sb.from(table).insert({ ...item, id: undefined }).select().single();
+  if (error) console.error('Supabase insert error (' + table + '):', error);
   return data;
 }
 
 async function sbDelete(table, id) {
-  await sb.from(table).delete().eq('id', id);
+  const { error } = await sb.from(table).delete().eq('id', id);
+  if (error) console.error('Supabase delete error (' + table + '):', error);
 }
 
 async function sbDeleteAll(table) {
-  await sb.from(table).delete().neq('id', 0);
+  const { error } = await sb.from(table).delete().neq('id', 0);
+  if (error) console.error('Supabase delete all error (' + table + '):', error);
 }
 
 async function sbLoadAll(table, orderBy) {
-  const { data } = await sb.from(table).select('*').order(orderBy || 'created_at', { ascending: false });
+  const { data, error } = await sb.from(table).select('*').order(orderBy || 'created_at', { ascending: false });
+  if (error) console.error('Supabase load error (' + table + '):', error);
   return data || [];
 }
 
@@ -1631,6 +1636,7 @@ function switchTab(name) {
     document.getElementById('ejPublicKey').value  = pub;
     document.getElementById('ejServiceId').value  = svc;
     document.getElementById('ejTemplateId').value = tpl;
+    document.getElementById('currentPassDisplay').textContent = getPass();
   }
 }
 
@@ -1642,6 +1648,7 @@ loadEmailJSKeys();
   _data.skills   = await sbLoadAll('skills');
   _data.services = await sbLoadAll('services');
   _data.inbox    = await sbLoadAll('inbox');
+  console.log('Supabase loaded — projects:', _data.projects.length, 'skills:', _data.skills.length, 'services:', _data.services.length, 'inbox:', _data.inbox.length);
   await seedDefaults();
   renderProjects();
   renderSkills();
