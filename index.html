@@ -1056,14 +1056,14 @@
           </div>
         </div>
         <p style="font-size:0.9rem; color:var(--grey); margin-bottom:0.3rem;">Change your admin password.</p>
-        <p style="font-size:0.82rem; color:var(--grey); margin-bottom:1rem;">Current password: <code id="currentPassDisplay" style="font-family:var(--mono); background:var(--bg); padding:0.15rem 0.5rem; border-radius:4px;"></code></p>
+        <p style="font-size:0.82rem; color:var(--grey); margin-bottom:1rem;">Current password: <code id="currentPassDisplay" style="font-family:var(--mono); background:var(--bg); padding:0.15rem 0.5rem; border-radius:4px;"></code> <button onclick="togglePassVisible()" id="passToggleBtn" style="background:none; border:none; color:var(--rose); cursor:pointer; font-size:0.78rem; text-decoration:underline; padding:0;">Show</button></p>
         <div class="field">
           <label>New Password</label>
-          <input type="text" id="newPass" placeholder="Enter new password" />
+          <input type="password" id="newPass" placeholder="Enter new password" />
         </div>
         <div class="field">
           <label>Confirm Password</label>
-          <input type="text" id="confirmPass" placeholder="Confirm new password" />
+          <input type="password" id="confirmPass" placeholder="Confirm new password" />
         </div>
         <p id="passError" style="color:#e57373; font-size:0.85rem; display:none;"></p>
         <button class="btn-add" onclick="changePassword()">Update Password</button>
@@ -1519,6 +1519,21 @@ function doLogin() {
   }
 }
 
+// ─── PASSWORD DISPLAY TOGGLE ────────────────────────────────
+let _passVisible = false;
+function togglePassVisible() {
+  _passVisible = !_passVisible;
+  const el = document.getElementById('currentPassDisplay');
+  const btn = document.getElementById('passToggleBtn');
+  if (_passVisible) {
+    el.textContent = getPass();
+    btn.textContent = 'Hide';
+  } else {
+    el.textContent = '••••••••';
+    btn.textContent = 'Show';
+  }
+}
+
 // ─── TABS ─────────────────────────────────────────────────────
 function switchTab(name) {
   document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
@@ -1636,7 +1651,9 @@ function switchTab(name) {
     document.getElementById('ejPublicKey').value  = pub;
     document.getElementById('ejServiceId').value  = svc;
     document.getElementById('ejTemplateId').value = tpl;
-    document.getElementById('currentPassDisplay').textContent = getPass();
+    _passVisible = false;
+    document.getElementById('currentPassDisplay').textContent = '••••••••';
+    document.getElementById('passToggleBtn').textContent = 'Show';
   }
 }
 
