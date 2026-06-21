@@ -1471,9 +1471,11 @@ function renderProjects() {
       </div>`;
     return;
   }
-  grid.innerHTML = projects.map((p, i) => `
+  grid.innerHTML = projects.map((p, i) => {
+    const hasImg = p.img && typeof p.img === 'string' && p.img.startsWith('http');
+    return `
     <div class="project-card reveal ${i < 2 ? 'reveal-delay-' + (i + 1) : ''} ${_activeFilter !== 'All' && p.cat !== _activeFilter ? 'hidden' : ''}" data-id="${p.id}" onclick="openProjectModal(${p.id})" style="transition-delay:${i * 0.1}s">
-      ${p.img
+      ${hasImg
         ? `<img src="${p.img}" class="project-thumb" alt="${p.title}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" /><div class="project-thumb-placeholder" style="display:none;">🎨</div>`
         : `<div class="project-thumb-placeholder">🎨</div>`
       }
@@ -1483,8 +1485,8 @@ function renderProjects() {
         ${p.description ? `<div class="project-desc">${p.description}</div>` : ''}
         ${p.link ? `<a href="${p.link}" target="_blank" rel="noopener" class="project-link" onclick="event.stopPropagation()">View Project →</a>` : ''}
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
 function renderSkills() {
@@ -1736,9 +1738,10 @@ function openProjectModal(id) {
   const p = getProjects().find(pr => pr.id === id);
   if (!p) return;
   const container = document.getElementById('projectModalContent');
+  const hasImg = p.img && typeof p.img === 'string' && p.img.startsWith('http');
   container.innerHTML = `
-    ${p.img
-      ? `<img src="${p.img}" class="project-modal-img" alt="${p.title}" />`
+    ${hasImg
+      ? `<img src="${p.img}" class="project-modal-img" alt="${p.title}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><div class="project-modal-placeholder" style="display:none;">🎨</div>`
       : `<div class="project-modal-placeholder">🎨</div>`
     }
     <div class="project-modal-cat">${p.cat}${p.year ? ' · ' + p.year : ''}</div>
