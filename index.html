@@ -1468,6 +1468,8 @@ async function seedDefaults() {
 // ─── IMG URL VALIDATION ──────────────────────────────────────
 function isValidImgUrl(val) {
   if (!val || typeof val !== 'string') return false;
+  // Reject template-literal-looking garbage or anything not http/https/data
+  if (/[${}]/.test(val)) return false;
   try {
     const url = new URL(val);
     return url.protocol === 'http:' || url.protocol === 'https:' || url.protocol === 'data:';
