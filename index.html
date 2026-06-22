@@ -188,34 +188,23 @@
     text-shadow: 0 0 40px rgba(0,0,0,0.03);
   }
 
-  /* ── HERO ZIGZAG ── */
-  .hero-zigzag {
+  /* ── HERO AMBIENT GLOW ── */
+  .hero-glow {
     position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
+    top: -30%;
+    right: -15%;
+    width: 80vmax;
+    height: 80vmax;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--rose) 0%, transparent 65%);
     pointer-events: none;
     z-index: 0;
-    opacity: 0.7;
+    opacity: 0.08;
+    animation: glowPulse 7s ease-in-out infinite;
   }
-  .hero-zigzag path {
-    fill: none;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-dasharray: 2500;
-    stroke-dashoffset: 2500;
-    animation: zigzagDraw 2.8s cubic-bezier(0.16,1,0.3,1) forwards;
-  }
-  .hero-zigzag path:nth-child(1) { animation-delay: 0s; }
-  .hero-zigzag path:nth-child(2) { animation-delay: 0.12s; }
-  .hero-zigzag path:nth-child(3) { animation-delay: 0.24s; }
-  .hero-zigzag path:nth-child(4) { animation-delay: 0.4s; }
-  .hero-zigzag path:nth-child(5) { animation-delay: 0.55s; }
-  .hero-zigzag path:nth-child(6) { animation-delay: 0.7s; }
-  .hero-zigzag path:nth-child(7) { animation-delay: 0.82s; }
-  .hero-zigzag path:nth-child(8) { animation-delay: 0.94s; }
-  @keyframes zigzagDraw {
-    to { stroke-dashoffset: 0; }
+  @keyframes glowPulse {
+    0%, 100% { opacity: 0.06; transform: scale(1); }
+    50% { opacity: 0.12; transform: scale(1.1); }
   }
 
   .hero-content {
@@ -1161,16 +1150,7 @@
 <section id="hero" class="hero">
   <div class="hero-bg-text">Brian Vunni</div>
 
-  <svg class="hero-zigzag" viewBox="0 0 1440 900" preserveAspectRatio="none">
-    <path d="M0 200 L160 140 L320 220 L480 130 L640 210 L800 120 L960 200 L1120 110 L1280 190 L1440 100" stroke="var(--rose)" stroke-width="1.5" opacity="0.2" />
-    <path d="M0 280 L160 220 L320 300 L480 210 L640 290 L800 200 L960 280 L1120 190 L1280 270 L1440 180" stroke="var(--rose)" stroke-width="0.8" opacity="0.12" />
-    <path d="M0 360 L160 300 L320 380 L480 290 L640 370 L800 280 L960 360 L1120 270 L1280 350 L1440 260" stroke="var(--rose)" stroke-width="0.5" opacity="0.08" stroke-dasharray="6 8" />
-    <path d="M680 40 L740 130 L660 190 L720 290 L630 370 L690 480 L580 550 L640 650" stroke="var(--rose)" stroke-width="2.5" opacity="0.35" />
-    <path d="M740 130 L800 170 L760 210 L820 260" stroke="var(--rose)" stroke-width="1.5" opacity="0.2" />
-    <path d="M660 190 L590 230 L630 280 L560 320" stroke="var(--rose)" stroke-width="1" opacity="0.15" />
-    <path d="M880 100 L910 130 L890 150 L920 180" stroke="var(--rose)" stroke-width="0.8" opacity="0.12" />
-    <path d="M480 120 L510 160 L490 190 L520 230" stroke="var(--rose)" stroke-width="0.8" opacity="0.1" />
-  </svg>
+  <div class="hero-glow"></div>
 
   <div class="hero-content">
     <div class="hero-left reveal visible">
