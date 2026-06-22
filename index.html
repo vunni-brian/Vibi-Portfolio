@@ -1303,8 +1303,13 @@
 // ─── SUPABASE ─────────────────────────────────────────────────
 const SUPABASE_URL = 'https://zzxzejaadftxlxbrrokq.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_FnCeVt2d8VN5o02pGIEoAg_YjL9eygs';
-const { createClient } = supabase;
-const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+let sb = null;
+try {
+  const { createClient } = supabase;
+  sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+} catch (e) {
+  console.warn('Supabase client init failed:', e.message);
+}
 
 // ─── EMAILJS CONFIG ───────────────────────────────────────────
 const EMAILJS_PUBLIC_KEY  = 'seM-zxbQHQRPh70k0';
@@ -1329,23 +1334,29 @@ function getServices() { return _data.services; }
 function getInbox() { return _data.inbox; }
 
 // ─── SUPABASE CRUD HELPERS ─────────────────────────────────────
+function sbReady() { return sb && typeof sb.from === 'function'; }
+
 async function sbInsert(table, item) {
+  if (!sbReady()) return null;
   const { data, error } = await sb.from(table).insert({ ...item, id: undefined }).select().single();
   if (error) console.error('Supabase insert error (' + table + '):', error);
   return data;
 }
 
 async function sbDelete(table, id) {
+  if (!sbReady()) return;
   const { error } = await sb.from(table).delete().eq('id', id);
   if (error) console.error('Supabase delete error (' + table + '):', error);
 }
 
 async function sbDeleteAll(table) {
+  if (!sbReady()) return;
   const { error } = await sb.from(table).delete().neq('id', 0);
   if (error) console.error('Supabase delete all error (' + table + '):', error);
 }
 
 async function sbLoadAll(table, orderBy) {
+  if (!sbReady()) return [];
   const { data, error } = await sb.from(table).select('*').order(orderBy || 'created_at', { ascending: false });
   if (error) console.error('Supabase load error (' + table + '):', error);
   return data || [];
