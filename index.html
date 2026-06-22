@@ -396,6 +396,39 @@
   .skill-name { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.3rem; }
   .skill-desc { font-size: 0.8rem; color: var(--grey); }
 
+  /* ── MARQUEE ── */
+  .marquee-wrap {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+    padding: 3rem 0;
+    -webkit-mask: linear-gradient(90deg,transparent,white 8%,white 92%,transparent);
+    mask: linear-gradient(90deg,transparent,white 8%,white 92%,transparent);
+  }
+  .marquee-track {
+    display: flex;
+    gap: 4rem;
+    width: fit-content;
+    animation: marqueeScroll 40s linear infinite;
+  }
+  .marquee-track:hover { animation-play-state: paused; }
+  .marquee-item {
+    font-family: var(--display);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--grey);
+    white-space: nowrap;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.4;
+    transition: opacity 0.3s cubic-bezier(0.16,1,0.3,1);
+  }
+  .marquee-item:hover { opacity: 1; color: var(--rose); }
+  @keyframes marqueeScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
   /* ── WORK / PROJECTS ── */
   #work { background: var(--ink); color: var(--white); }
   #work .section-label { color: var(--rose); }
@@ -963,6 +996,9 @@
   .reveal-delay-4 { transition-delay: 0.48s; }
   .reveal-delay-5 { transition-delay: 0.6s; }
 
+  /* ── STAT COUNTER ── */
+  .stat-counter { display: inline-block; font-variant-numeric: tabular-nums; }
+
   /* ── LOADING ── */
   #loadingOverlay {
     position: fixed; inset: 0;
@@ -1126,8 +1162,8 @@
       <p>Hi, I'm Brian Vunni — a graphic designer passionate about turning ideas into compelling visual experiences. I believe great design is more than just aesthetics; it communicates, persuades, and leaves a lasting impression.</p>
       <p>Whether you're a startup building your brand from scratch, a business refreshing your identity, or a creative needing design support — I'm here to help bring your vision to life.</p>
       <div class="about-stats">
-        <div class="stat-item"><strong>3+</strong><span>Years Experience</span></div>
-        <div class="stat-item"><strong>50+</strong><span>Projects Done</span></div>
+        <div class="stat-item"><strong class="stat-counter" data-count="3" data-suffix="+">0+</strong><span>Years Experience</span></div>
+        <div class="stat-item"><strong class="stat-counter" data-count="50" data-suffix="+">0+</strong><span>Projects Done</span></div>
         <div class="stat-item"><strong>🇺🇬</strong><span>Based in Uganda</span></div>
       </div>
       <div class="about-contacts">
@@ -1155,6 +1191,30 @@
   <p class="section-sub reveal reveal-delay-2">A toolkit built over years of hands-on design work — from concept to final output.</p>
   <div class="skills-grid" id="skillsGrid">
     <!-- populated by JS -->
+  </div>
+</section>
+
+<!-- MARQUEE STRIP -->
+<section style="padding:2rem 0;">
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span class="marquee-item">Adobe Creative Suite</span>
+      <span class="marquee-item">Figma</span>
+      <span class="marquee-item">Brand Strategy</span>
+      <span class="marquee-item">Typography</span>
+      <span class="marquee-item">Print Production</span>
+      <span class="marquee-item">UI / UX</span>
+      <span class="marquee-item">Motion Design</span>
+      <span class="marquee-item">Packaging</span>
+      <span class="marquee-item">Adobe Creative Suite</span>
+      <span class="marquee-item">Figma</span>
+      <span class="marquee-item">Brand Strategy</span>
+      <span class="marquee-item">Typography</span>
+      <span class="marquee-item">Print Production</span>
+      <span class="marquee-item">UI / UX</span>
+      <span class="marquee-item">Motion Design</span>
+      <span class="marquee-item">Packaging</span>
+    </div>
   </div>
 </section>
 
@@ -1674,6 +1734,7 @@ function renderProjects() {
       </div>
     </div>`;
   }).join('');
+  applyMagneticTilt();
 }
 
 function renderSkills() {
@@ -1686,6 +1747,7 @@ function renderSkills() {
       ${s.description ? `<div class="skill-desc">${s.description}</div>` : ''}
     </div>
   `).join('');
+  applyMagneticTilt();
 }
 
 function renderServices() {
@@ -1698,6 +1760,7 @@ function renderServices() {
       ${s.description ? `<div class="service-desc">${s.description}</div>` : ''}
     </div>
   `).join('');
+  applyMagneticTilt();
 }
 
 function renderInbox() {
@@ -2116,7 +2179,68 @@ const observer = new IntersectionObserver((entries) => {
 
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.reveal:not(.visible)').forEach(el => observer.observe(el));
+  document.querySelectorAll('.stat-counter').forEach(el => counterObserver.observe(el));
 });
+
+// ─── STAT COUNTER ──────────────────────────────────────────────
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const target = parseInt(el.dataset.count);
+      const suffix = el.dataset.suffix || '';
+      const duration = 1200;
+      const start = performance.now();
+      function update(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.floor(eased * target) + suffix;
+        if (progress < 1) requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+      counterObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+
+// ─── PARALLAX HERO ─────────────────────────────────────────────
+let ticking = false;
+window.addEventListener('scroll', () => {
+  if (!ticking) {
+    requestAnimationFrame(() => {
+      const heroBg = document.querySelector('.hero-bg-text');
+      if (heroBg) {
+        const rect = heroBg.closest('.hero').getBoundingClientRect();
+        const progress = -rect.top / (rect.height - window.innerHeight);
+        heroBg.style.transform = `translateY(-50%) translateY(${progress * 50}px)`;
+      }
+      ticking = false;
+    });
+    ticking = true;
+  }
+});
+
+// ─── MAGNETIC TILT ─────────────────────────────────────────────
+function applyMagneticTilt() {
+  document.querySelectorAll('.project-card, .skill-card, .service-card').forEach(card => {
+    if (card.dataset.tilt) return;
+    card.dataset.tilt = '1';
+    const base = window.getComputedStyle(card).getPropertyValue('--tilt-y') || '-6px';
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const cx = rect.width / 2;
+      const cy = rect.height / 2;
+      const dx = (x - cx) / cx;
+      const dy = (y - cy) / cy;
+      card.style.transform = `perspective(800px) translateY(-6px) rotateX(${-dy * 6}deg) rotateY(${dx * 6}deg)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+}
 
 // ─── INIT ─────────────────────────────────────────────────────
 loadEmailJSKeys();
@@ -2146,6 +2270,7 @@ loadEmailJSKeys();
   renderSkills();
   renderServices();
   updateInboxBadge();
+  applyMagneticTilt();
   // hide loading overlay
   setTimeout(() => document.getElementById('loadingOverlay').classList.add('hidden'), 300);
   // observe reveal elements after render
