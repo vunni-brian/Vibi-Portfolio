@@ -1465,6 +1465,15 @@ async function seedDefaults() {
   renderServices();
 }
 
+// ─── IMG URL VALIDATION ──────────────────────────────────────
+function isValidImgUrl(val) {
+  if (!val || typeof val !== 'string') return false;
+  try {
+    const url = new URL(val);
+    return url.protocol === 'http:' || url.protocol === 'https:' || url.protocol === 'data:';
+  } catch { return false; }
+}
+
 // ─── RENDER ───────────────────────────────────────────────────
 let _activeFilter = 'All';
 
@@ -1502,7 +1511,7 @@ function renderProjects() {
     return;
   }
   grid.innerHTML = projects.map((p, i) => {
-    const hasImg = p.img && typeof p.img === 'string' && (p.img.startsWith('http') || p.img.startsWith('data:'));
+    const hasImg = isValidImgUrl(p.img);
     return `
     <div class="project-card reveal ${i < 2 ? 'reveal-delay-' + (i + 1) : ''} ${_activeFilter !== 'All' && p.cat !== _activeFilter ? 'hidden' : ''}" data-id="${p.id}" onclick="openProjectModal(${p.id})" style="transition-delay:${i * 0.1}s">
       <div class="project-card-inner">
@@ -1631,7 +1640,7 @@ function renderAdminServiceList() {
 function previewUrlImg() {
   const url = document.getElementById('pImgUrl').value.trim();
   const preview = document.getElementById('urlPreview');
-  if (url) {
+  if (url && isValidImgUrl(url)) {
     preview.src = url;
     preview.style.display = 'block';
   } else {
@@ -1644,12 +1653,13 @@ function addProject() {
   const title = document.getElementById('pTitle').value.trim();
   if (!title) { alert('Please enter a project title.'); return; }
   const urlImg = document.getElementById('pImgUrl').value.trim();
+  const imgUrl = isValidImgUrl(urlImg) ? urlImg : (_currentImgData || '');
   const item = {
     title,
     cat: document.getElementById('pCat').value,
     year: document.getElementById('pYear').value.trim(),
     description: document.getElementById('pDesc').value.trim(),
-    img: urlImg || _currentImgData || '',
+    img: imgUrl,
     link: document.getElementById('pLink').value.trim(),
   };
   ['pTitle','pYear','pDesc','pLink','pImgUrl'].forEach(id => document.getElementById(id).value = '');
@@ -1770,7 +1780,7 @@ function openProjectModal(id) {
   const p = getProjects().find(pr => pr.id === id);
   if (!p) return;
   const container = document.getElementById('projectModalContent');
-  const hasImg = p.img && typeof p.img === 'string' && (p.img.startsWith('http') || p.img.startsWith('data:'));
+  const hasImg = isValidImgUrl(p.img);
   container.innerHTML = `
     ${hasImg
       ? `<img src="${p.img}" class="project-modal-img" alt="${p.title}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><div class="project-modal-placeholder" style="display:none;">🎨</div>`
