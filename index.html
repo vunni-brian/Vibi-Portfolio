@@ -2127,6 +2127,20 @@ loadEmailJSKeys();
   _data.services = await sbLoadAll('services');
   _data.inbox    = await sbLoadAll('inbox');
   console.log('Supabase loaded — projects:', _data.projects.length, 'skills:', _data.skills.length, 'services:', _data.services.length, 'inbox:', _data.inbox.length);
+
+  // Fallback sample project if none exist
+  if (_data.projects.length === 0) {
+    _data.projects.push({
+      id: Date.now(),
+      title: 'AfroNation Kampala 2025',
+      cat: 'Event',
+      year: '2025',
+      description: 'Vibrant festival flyer design featuring bold Afro-centric typography, warm earth tones, and dynamic grid layout. Captures the energy of Uganda\'s premier music and culture festival.',
+      img: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80',
+      link: '',
+    });
+  }
+
   await seedDefaults();
   renderProjects();
   renderSkills();
