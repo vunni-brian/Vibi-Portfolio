@@ -53,28 +53,37 @@
 
 
   nav {
-    position: fixed; top: 0; left: 0; right: 0;
+    position: fixed; top: 1.5rem; left: 50%;
+    transform: translateX(-50%);
     z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 1.2rem 2.5rem;
-    background: rgba(250,250,248,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    transition: box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 0.55rem 0.55rem 0.55rem 1.5rem;
+    background: rgba(250,250,248,0.82);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    width: auto;
+    min-width: fit-content;
+    gap: 2rem;
+    transition: box-shadow 0.4s cubic-bezier(0.16,1,0.3,1), background 0.4s cubic-bezier(0.16,1,0.3,1), width 0.4s cubic-bezier(0.16,1,0.3,1);
   }
-  nav.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.07); }
+  nav.scrolled {
+    box-shadow: 0 4px 30px rgba(0,0,0,0.07);
+    background: rgba(250,250,248,0.95);
+  }
   .nav-logo {
     font-family: var(--display);
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     font-weight: 700;
     letter-spacing: -0.02em;
     color: var(--ink);
     text-decoration: none;
   }
   .nav-logo span { color: var(--rose); }
-  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links { display: flex; gap: 1.5rem; list-style: none; }
   .nav-links a {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 500;
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -84,20 +93,71 @@
   }
   .nav-links a:hover { color: var(--ink); }
   .nav-cta {
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     font-weight: 600;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.03em;
     text-transform: uppercase;
     color: var(--ink);
     background: var(--rose);
-    padding: 0.55rem 1.3rem;
-    border-radius: 2rem;
+    padding: 0.5rem 1.1rem;
+    border-radius: 100px;
     text-decoration: none;
-    transition: opacity .2s;
+    transition: opacity .2s, transform .2s;
   }
-  .nav-cta:hover { opacity: 0.85; }
-  .hamburger { display: none; background: none; border: none; cursor: pointer; flex-direction: column; gap: 5px; }
-  .hamburger span { display: block; width: 24px; height: 2px; background: var(--ink); transition: all .3s; }
+  .nav-cta:hover { opacity: 0.85; transform: scale(1.02); }
+  .hamburger {
+    display: none; background: none; border: none; cursor: pointer;
+    width: 28px; height: 28px; position: relative;
+  }
+  .hamburger span {
+    display: block;
+    width: 22px; height: 2px;
+    background: var(--ink);
+    border-radius: 2px;
+    position: absolute; left: 3px;
+    transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
+  }
+  .hamburger span:nth-child(1) { top: 5px; }
+  .hamburger span:nth-child(2) { top: 13px; }
+  .hamburger span:nth-child(3) { top: 21px; }
+  .hamburger.active span:nth-child(1) { top: 13px; transform: rotate(45deg); }
+  .hamburger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .hamburger.active span:nth-child(3) { top: 13px; transform: rotate(-45deg); }
+
+  /* ── NAV OVERLAY ── */
+  .nav-overlay {
+    position: fixed; inset: 0;
+    z-index: 99;
+    background: rgba(250,250,248,0.97);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s cubic-bezier(0.16,1,0.3,1);
+  }
+  .nav-overlay.open { opacity: 1; pointer-events: all; }
+  .nav-overlay-links { list-style: none; display: flex; flex-direction: column; gap: 2rem; text-align: center; }
+  .nav-overlay-links a {
+    font-family: var(--display);
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 300;
+    color: var(--ink);
+    text-decoration: none;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.5s cubic-bezier(0.16,1,0.3,1), color .2s;
+  }
+  .nav-overlay.open .nav-overlay-links a { opacity: 1; transform: translateY(0); }
+  .nav-overlay.open .nav-overlay-links a:nth-child(1) { transition-delay: 0.05s; }
+  .nav-overlay.open .nav-overlay-links a:nth-child(2) { transition-delay: 0.1s; }
+  .nav-overlay.open .nav-overlay-links a:nth-child(3) { transition-delay: 0.15s; }
+  .nav-overlay.open .nav-overlay-links a:nth-child(4) { transition-delay: 0.2s; }
+  .nav-overlay.open .nav-overlay-links a:nth-child(5) { transition-delay: 0.25s; }
+  .nav-overlay-links a:hover { color: var(--rose); }
 
   /* ── HERO ── */
   .hero {
@@ -181,12 +241,22 @@
     text-transform: uppercase;
     color: var(--ink);
     text-decoration: none;
-    padding-bottom: 0.25rem;
-    border-bottom: 1px solid var(--ink);
-    transition: gap 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 0.55rem 0.55rem 0.55rem 1.4rem;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
   }
-  .hero-cta:hover { gap: 1.25rem; border-color: var(--rose); color: var(--rose); }
-  .hero-cta-arrow { font-size: 1rem; }
+  .hero-cta:hover { border-color: var(--rose); gap: 1rem; color: var(--ink); }
+  .hero-cta-arrow {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), background 0.25s;
+  }
+  .hero-cta:hover .hero-cta-arrow { transform: translateX(2px) scale(1.05); }
+  .hero-cta:active .hero-cta-arrow { transform: scale(0.95); }
+  .hero-cta-arrow-inner { color: var(--white); font-size: 0.85rem; line-height: 1; }
 
   .scroll-hint {
     position: absolute;
@@ -339,20 +409,21 @@
     margin: 0 auto;
   }
   .project-card {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 14px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 20px;
     overflow: hidden;
     cursor: pointer;
-    padding: 1px;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 1.5px;
+    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s cubic-bezier(0.16,1,0.3,1);
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.08);
   }
   .project-card-inner {
     background: rgba(255,255,255,0.04);
-    border-radius: 13px;
+    border-radius: calc(20px - 1.5px);
     overflow: hidden;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.08);
   }
-  .project-card:hover { transform: translateY(-5px); border-color: var(--rose); box-shadow: 0 12px 40px rgba(0,0,0,0.25); }
+  .project-card:hover { transform: translateY(-6px); box-shadow: 0 0 0 1px var(--rose), 0 12px 40px rgba(0,0,0,0.25); }
   .project-card:active { transform: translateY(-2px) scale(0.98); }
   .project-thumb {
     width: 100%;
@@ -491,20 +562,32 @@
   input:focus, textarea:focus, select:focus { border-color: var(--rose); }
   textarea { resize: vertical; min-height: 130px; }
   .btn-send {
-    padding: 1rem 2.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.7rem 0.7rem 0.7rem 1.8rem;
     background: var(--ink);
     color: var(--white);
     border: none;
-    border-radius: 3rem;
+    border-radius: 100px;
     font-family: var(--body);
     font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background .2s, transform .15s;
+    transition: all .2s, gap 0.35s cubic-bezier(0.16,1,0.3,1);
     align-self: flex-start;
     letter-spacing: 0.02em;
   }
-  .btn-send:hover { background: #333; transform: translateY(-1px); }
+  .btn-send:hover { background: #333; transform: translateY(-1px); gap: 1rem; }
+  .btn-send-arrow {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
+  }
+  .btn-send:hover .btn-send-arrow { transform: translateX(2px); }
+  .btn-send-arrow-inner { font-size: 0.85rem; line-height: 1; }
   .form-note { font-size: 0.8rem; color: var(--grey); margin-top: 0.5rem; }
   .form-success {
     text-align: center;
@@ -734,18 +817,9 @@
 
   /* ── RESPONSIVE ── */
   @media (max-width: 768px) {
-    nav { padding: 1rem 1.5rem; }
-    .nav-links { display: none; }
-    .hamburger { display: flex; }
-    .nav-mobile-open .nav-links {
-      display: flex; flex-direction: column;
-      position: fixed; top: 60px; left: 0; right: 0;
-      background: var(--white);
-      padding: 1.5rem;
-      gap: 1.5rem;
-      border-bottom: 1px solid var(--border);
-      z-index: 99;
-    }
+    nav { left: 0; transform: none; top: 0; border-radius: 0; padding: 1rem 1.5rem; width: 100%; min-width: initial; }
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: block; }
     .hero { padding: 0 1.5rem 4rem; }
     .hero-content { grid-template-columns: 1fr; gap: 2rem; }
     .scroll-hint { display: none; }
@@ -835,6 +909,38 @@
     background-size: 192px 192px;
   }
 
+  /* ── CUSTOM CURSOR ── */
+  .cursor-dot {
+    position: fixed; top: 0; left: 0;
+    width: 6px; height: 6px;
+    background: var(--rose);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s, background 0.2s;
+    will-change: transform;
+  }
+  .cursor-ring {
+    position: fixed; top: 0; left: 0;
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--rose);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-50%, -50%);
+    transition: width 0.35s cubic-bezier(0.16,1,0.3,1), height 0.35s cubic-bezier(0.16,1,0.3,1), border-color 0.35s cubic-bezier(0.16,1,0.3,1), background 0.35s cubic-bezier(0.16,1,0.3,1);
+    will-change: transform;
+  }
+  .cursor-ring.hover {
+    width: 56px; height: 56px;
+    border-color: transparent;
+    background: rgba(122,158,122,0.12);
+  }
+  @media (max-width: 768px) {
+    .cursor-dot, .cursor-ring { display: none; }
+  }
+
   /* ── GLOBAL INTERACTION REFINEMENTS ── */
   a, button, input, textarea, select { transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
   button:active, .btn-send:active, .filter-btn:active, .admin-fab:active, .back-top:active, .nav-cta:active { transform: scale(0.97); }
@@ -843,11 +949,13 @@
   .reveal {
     opacity: 0;
     transform: translateY(28px);
-    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    filter: blur(4px);
+    transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1), filter 0.8s cubic-bezier(0.16,1,0.3,1);
   }
   .reveal.visible {
     opacity: 1;
     transform: translateY(0);
+    filter: blur(0);
   }
   .reveal-delay-1 { transition-delay: 0.12s; }
   .reveal-delay-2 { transition-delay: 0.24s; }
@@ -942,6 +1050,10 @@
 
 <div class="grain"></div>
 
+<!-- CUSTOM CURSOR -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
 <!-- LOADING OVERLAY -->
 <div id="loadingOverlay">
   <div style="display:flex;">
@@ -968,6 +1080,17 @@
   </button>
 </nav>
 
+<!-- NAV OVERLAY (MOBILE) -->
+<div class="nav-overlay" id="navOverlay">
+  <ul class="nav-overlay-links">
+    <li><a href="#about" onclick="closeNavOverlay()">About</a></li>
+    <li><a href="#skills" onclick="closeNavOverlay()">Skills</a></li>
+    <li><a href="#work" onclick="closeNavOverlay()">Work</a></li>
+    <li><a href="#services" onclick="closeNavOverlay()">Services</a></li>
+    <li><a href="#contact" onclick="closeNavOverlay()">Contact</a></li>
+  </ul>
+</div>
+
 <!-- HERO -->
 <section id="hero" class="hero">
   <div class="hero-bg-text">Brian Vunni</div>
@@ -984,7 +1107,9 @@
       <p class="hero-bio">Crafting considered visual identities and digital experiences for brands that want to stand apart.</p>
       <a href="#work" class="hero-cta">
         View selected work
-        <span class="hero-cta-arrow">→</span>
+        <span class="hero-cta-arrow">
+          <span class="hero-cta-arrow-inner">→</span>
+        </span>
       </a>
     </div>
   </div>
@@ -1095,7 +1220,12 @@
         <label for="fmessage">Tell me about your project</label>
         <textarea id="fmessage" placeholder="Describe what you need, your timeline, and any other details…" required></textarea>
       </div>
-      <button type="submit" class="btn-send">Send Message →</button>
+      <button type="submit" class="btn-send">
+        Send Message
+        <span class="btn-send-arrow">
+          <span class="btn-send-arrow-inner">→</span>
+        </span>
+      </button>
       <p class="form-note">Or reach me directly: <a href="mailto:vunnibrian14@gmail.com">vunnibrian14@gmail.com</a> · <a href="tel:+256764854885">+256 764 854 885</a></p>
     </form>
   </div>
@@ -1860,8 +1990,14 @@ window.addEventListener('scroll', () => {
 });
 
 document.getElementById('hamburger').addEventListener('click', () => {
-  document.getElementById('mainNav').classList.toggle('nav-mobile-open');
+  document.getElementById('hamburger').classList.toggle('active');
+  document.getElementById('navOverlay').classList.toggle('open');
 });
+
+function closeNavOverlay() {
+  document.getElementById('hamburger').classList.remove('active');
+  document.getElementById('navOverlay').classList.remove('open');
+}
 
 // ─── CONTACT FORM ─────────────────────────────────────────────
 document.getElementById('contactForm').addEventListener('submit', function(e) {
@@ -1876,7 +2012,7 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
 
   // ── Send via EmailJS ──
   const btn = document.querySelector('.btn-send');
-  btn.textContent = 'Sending…';
+  btn.innerHTML = 'Sending…<span class="btn-send-arrow"><span class="btn-send-arrow-inner">→</span></span>';
   btn.disabled = true;
 
   const templateParams = {
@@ -1902,7 +2038,7 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
     showFormSuccess();
   }
 
-  btn.textContent = 'Send Message →';
+  btn.innerHTML = 'Send Message<span class="btn-send-arrow"><span class="btn-send-arrow-inner">→</span></span>';
   btn.disabled = false;
 });
 
@@ -1952,6 +2088,22 @@ function loadEmailJSKeys() {
     if (typeof emailjs !== 'undefined') emailjs.init({ publicKey: pub });
   }
 }
+
+// ─── CUSTOM CURSOR ─────────────────────────────────────────────
+(function initCursor() {
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  if (!dot || !ring || 'ontouchstart' in window) return;
+  document.body.style.cursor = 'none';
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.left = mx + 'px'; dot.style.top = my + 'px'; });
+  function anim() { rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(anim); }
+  anim();
+  document.querySelectorAll('a, button, .project-card, .skill-card, .service-card, input, textarea, select').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+  });
+})();
 
 // ─── SCROLL REVEAL ─────────────────────────────────────────────
 const observer = new IntersectionObserver((entries) => {
