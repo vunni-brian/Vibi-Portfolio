@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://vibi.vercel.app/sitemap.xml
+Sitemap: https://vibi-design.vercel.app/sitemap.xml

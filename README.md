@@ -204,7 +204,7 @@ MIT — free to use, modify, and share.
 ---
 
 <p align="center">
-  <sub>Built with intent by <a href="https://vibi.vercel.app">Brian Vunni</a></sub>
+  <sub>Built with intent by <a href="https://vibi-design.vercel.app">Brian Vunni</a></sub>
   <br>
   <sub>Powered by coffee, curiosity, and Supabase</sub>
 </p>

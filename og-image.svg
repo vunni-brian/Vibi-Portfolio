@@ -18,5 +18,5 @@
   <text x="80" y="390" font-family="system-ui, sans-serif" font-size="24" font-weight="400" fill="#6B6B69" letter-spacing="1">Graphic Designer &amp; Brand Identity Designer</text>
   <text x="80" y="430" font-family="system-ui, sans-serif" font-size="20" font-weight="300" fill="#6B6B69" letter-spacing="0.5">Kampala, Uganda · Available Worldwide</text>
   <line x1="80" y1="480" x2="400" y2="480" stroke="#7A9E7A" stroke-width="2" opacity="0.4"/>
-  <text x="80" y="530" font-family="monospace" font-size="16" fill="#7A9E7A" letter-spacing="2">vibi.vercel.app</text>
+  <text x="80" y="530" font-family="monospace" font-size="16" fill="#7A9E7A" letter-spacing="2">vibi-design.vercel.app</text>
 </svg>
