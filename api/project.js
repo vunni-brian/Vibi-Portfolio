@@ -18,17 +18,17 @@ function htmlPage(title, description, content) {
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>${title} | VIBI Design</title>
+<title>${title} | Vibi Design</title>
 <meta name="description" content="${description}" />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://vibi-design.vercel.app${content.url}" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://vibi-design.vercel.app${content.url}" />
-<meta property="og:title" content="${title} | VIBI Design" />
+<meta property="og:title" content="${title} | Vibi Design" />
 <meta property="og:description" content="${description}" />
 <meta property="og:image" content="https://vibi-design.vercel.app/og-image.png" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="${title} | VIBI Design" />
+<meta name="twitter:title" content="${title} | Vibi Design" />
 <meta name="twitter:description" content="${description}" />
 <meta name="twitter:image" content="https://vibi-design.vercel.app/og-image.png" />
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎨</text></svg>" />
@@ -45,10 +45,10 @@ function htmlPage(title, description, content) {
 </style>
 </head>
 <body>
-  <a href="https://vibi-design.vercel.app/" style="color:#999;text-decoration:none;font-size:0.85rem;margin-bottom:2rem;display:inline-block;">← Back to VIBI Design</a>
+  <a href="https://vibi-design.vercel.app/" style="color:#999;text-decoration:none;font-size:0.85rem;margin-bottom:2rem;display:inline-block;">← Back to Vibi Design</a>
   ${content.body}
   <div class="footer">
-    <p>VIBI Design by Brian Vunni — Kampala, Uganda</p>
+    <p>Vibi Design by Brian Vunni — Kampala, Uganda</p>
   </div>
 </body>
 </html>`;
@@ -73,7 +73,7 @@ export default async function handler(req, res) {
   }
 
   const title = p.seo_title || p.title;
-  const desc = p.meta_description || p.description || 'A project by VIBI Design';
+  const desc = p.meta_description || p.description || 'A project by Vibi Design';
   const hasImg = p.img && (p.img.startsWith('http') || p.img.startsWith('data:'));
 
   const body = `
