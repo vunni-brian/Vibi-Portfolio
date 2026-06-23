@@ -1493,9 +1493,9 @@
           <div class="upload-area" id="uploadArea" onclick="document.getElementById('pImgFile').click()">
             <div class="upload-icon">📁</div>
             <div class="upload-text">Click to upload an image</div>
-            <div class="upload-hint">JPG, PNG, GIF, WEBP — any size</div>
+            <div class="upload-hint">JPG, PNG, GIF, WEBP, PDF — any size</div>
           </div>
-          <input type="file" id="pImgFile" accept="image/*" style="display:none;" onchange="handleImgUpload(this)" />
+          <input type="file" id="pImgFile" accept="image/*,application/pdf" style="display:none;" onchange="handleImgUpload(this)" />
           <div class="upload-preview-wrap" id="uploadPreviewWrap" style="display:none;">
             <img class="img-preview" id="imgPreview" alt="Preview" style="display:block;" />
             <button type="button" class="upload-clear" onclick="clearUpload()">✕ Remove image</button>
@@ -1638,6 +1638,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
 // ─── SUPABASE ─────────────────────────────────────────────────
 const SUPABASE_URL = 'https://zzxzejaadftxlxbrrokq.supabase.co';
@@ -2133,14 +2134,39 @@ let _currentImgData = null;
 function handleImgUpload(input) {
   const file = input.files[0];
   if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    _currentImgData = e.target.result;
-    document.getElementById('imgPreview').src = _currentImgData;
-    document.getElementById('uploadPreviewWrap').style.display = 'block';
-    document.getElementById('uploadArea').style.display = 'none';
-  };
-  reader.readAsDataURL(file);
+  if (file.type === 'application/pdf') {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      pdfjsLib.getDocument({ data: e.target.result }).promise.then(function(pdf) {
+        pdf.getPage(1).then(function(page) {
+          const vp = page.getViewport({ scale: 1.5 });
+          const canvas = document.createElement('canvas');
+          canvas.width = vp.width;
+          canvas.height = vp.height;
+          page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise.then(function() {
+            _currentImgData = canvas.toDataURL('image/png');
+            document.getElementById('imgPreview').src = _currentImgData;
+            document.getElementById('uploadPreviewWrap').style.display = 'block';
+            document.getElementById('uploadArea').style.display = 'none';
+          });
+        });
+      }).catch(function(err) {
+        console.error('PDF render error:', err);
+        alert('Could not render this PDF. Try a different file.');
+      });
+    };
+    reader.readAsArrayBuffer(file);
+  } else {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      _currentImgData = e.target.result;
+      document.getElementById('imgPreview').src = _currentImgData;
+      document.getElementById('uploadPreviewWrap').style.display = 'block';
+      document.getElementById('uploadArea').style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  }
 }
 
 function clearUpload() {
@@ -2160,7 +2186,7 @@ document.addEventListener('DOMContentLoaded', function() {
     e.preventDefault();
     area.classList.remove('dragover');
     const file = e.dataTransfer.files[0];
-    if (file && file.type.startsWith('image/')) {
+    if (file && (file.type.startsWith('image/') || file.type === 'application/pdf')) {
       const dt = new DataTransfer();
       dt.items.add(file);
       const inp = document.getElementById('pImgFile');
