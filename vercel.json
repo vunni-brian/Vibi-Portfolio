@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/projects/:slug", "destination": "/index.html" },
+    { "source": "/services/:slug", "destination": "/index.html" }
+  ]
+}

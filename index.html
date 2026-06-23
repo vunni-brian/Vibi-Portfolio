@@ -3,14 +3,44 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Brian Vunni — Graphic Designer</title>
-<meta property="og:title" content="Brian Vunni — Graphic Designer" />
-<meta property="og:description" content="Crafting considered visual identities and digital experiences for brands that want to stand apart. Based in Kampala, working worldwide." />
+<title>VIBI Design | Graphic Designer & Brand Identity Designer in Uganda</title>
+<meta name="description" content="VIBI Design by Brian Vunni offers graphic design, brand identity, print design, and visual communication services in Uganda." />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://vibi.vercel.app" />
+
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://vibi.vercel.app" />
+<meta property="og:title" content="VIBI Design | Graphic Designer & Brand Identity Designer in Uganda" />
+<meta property="og:description" content="VIBI Design by Brian Vunni offers graphic design, brand identity, print design, and visual communication services in Uganda." />
 <meta property="og:image" content="https://vibi.vercel.app/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:site_name" content="VIBI Design" />
+<meta property="og:locale" content="en_UG" />
+
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="description" content="Crafting considered visual identities and digital experiences for brands that want to stand apart. Based in Kampala, working worldwide." />
+<meta name="twitter:title" content="VIBI Design | Graphic Designer & Brand Identity Designer in Uganda" />
+<meta name="twitter:description" content="VIBI Design by Brian Vunni offers graphic design, brand identity, print design, and visual communication services in Uganda." />
+<meta name="twitter:image" content="https://vibi.vercel.app/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Brian Vunni",
+  "brand": "VIBI Design",
+  "jobTitle": "Graphic Designer",
+  "url": "https://vibi.vercel.app",
+  "image": "https://vibi.vercel.app/og-image.png",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Kampala",
+    "addressCountry": "UG"
+  },
+  "sameAs": []
+}
+</script>
+
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 
@@ -662,6 +692,25 @@
     letter-spacing: 0.05em;
   }
   footer a { color: var(--rose); text-decoration: none; }
+
+  /* ── PAGE VIEW ── */
+  #pageView {
+    min-height: 80vh; padding: 6rem 2rem 4rem; max-width: 960px; margin: 0 auto;
+  }
+  #pageView .pv-back {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 0.78rem; font-weight: 500; letter-spacing: 0.04em;
+    text-transform: uppercase; color: var(--grey); text-decoration: none;
+    margin-bottom: 2rem; transition: color .2s; cursor: pointer; background: none; border: none;
+  }
+  #pageView .pv-back:hover { color: var(--ink); }
+  #pageView .pv-image { width: 100%; border-radius: 12px; margin-bottom: 2rem; }
+  #pageView .pv-cat { font-family: var(--mono); font-size: 0.75rem; color: var(--rose); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  #pageView .pv-title { font-family: var(--display); font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 300; line-height: 1.1; margin-bottom: 1rem; }
+  #pageView .pv-desc { font-size: 1rem; color: var(--grey); line-height: 1.7; max-width: 64ch; margin-bottom: 2rem; }
+  #pageView .pv-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 600; color: var(--rose); text-decoration: none; }
+  #pageView .pv-link:hover { text-decoration: underline; }
+  #pageView .pv-placeholder { width: 100%; height: 320px; background: var(--sand); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin-bottom: 2rem; }
 
   /* ── ADMIN TOGGLE ── */
   .admin-fab {
@@ -1326,6 +1375,9 @@
   </div>
 </div>
 
+<!-- PAGE VIEW (for dedicated project/service pages) -->
+<div id="pageView" style="display:none;"></div>
+
 <!-- BACK TO TOP -->
 <button class="back-top" id="backTop" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
@@ -1416,6 +1468,27 @@
           <label>Project Link <small style="color:var(--grey); font-weight:400;">(optional)</small></label>
           <input type="url" id="pLink" placeholder="https://behance.net/yourproject" />
         </div>
+        <details style="margin-top:0.5rem; border:1px solid var(--border); border-radius:8px; padding:0.5rem 1rem;">
+          <summary style="cursor:pointer; font-size:0.85rem; color:var(--grey); font-weight:500;">SEO Settings <small style="font-weight:400;">(optional)</small></summary>
+          <div style="margin-top:0.8rem; display:flex; flex-direction:column; gap:0.6rem;">
+            <div class="field">
+              <label>Slug <small style="color:var(--grey); font-weight:400;">e.g. kawa-coffee-brand-identity</small></label>
+              <input type="text" id="pSlug" placeholder="Auto-generated from title if left empty" />
+            </div>
+            <div class="field">
+              <label>SEO Title</label>
+              <input type="text" id="pSeoTitle" placeholder="Defaults to project title" />
+            </div>
+            <div class="field">
+              <label>Meta Description</label>
+              <textarea id="pMetaDesc" placeholder="A short description for search engines" style="min-height:60px;"></textarea>
+            </div>
+            <div class="field">
+              <label>Image Alt Text</label>
+              <input type="text" id="pImgAlt" placeholder="Describe the image for accessibility" />
+            </div>
+          </div>
+        </details>
         <button class="btn-add" onclick="addProject()">+ Add Project</button>
       </div>
       <div class="admin-list" id="adminProjectList"></div>
@@ -1462,6 +1535,23 @@
           <label>Description</label>
           <textarea id="svDesc" placeholder="Describe what this service includes…" style="min-height:80px;"></textarea>
         </div>
+        <details style="margin-top:0.5rem; border:1px solid var(--border); border-radius:8px; padding:0.5rem 1rem;">
+          <summary style="cursor:pointer; font-size:0.85rem; color:var(--grey); font-weight:500;">SEO Settings <small style="font-weight:400;">(optional)</small></summary>
+          <div style="margin-top:0.8rem; display:flex; flex-direction:column; gap:0.6rem;">
+            <div class="field">
+              <label>Slug <small style="color:var(--grey); font-weight:400;">e.g. brand-identity</small></label>
+              <input type="text" id="svSlug" placeholder="Auto-generated from name if left empty" />
+            </div>
+            <div class="field">
+              <label>SEO Title</label>
+              <input type="text" id="svSeoTitle" placeholder="Defaults to service name" />
+            </div>
+            <div class="field">
+              <label>Meta Description</label>
+              <textarea id="svMetaDesc" placeholder="A short description for search engines" style="min-height:60px;"></textarea>
+            </div>
+          </div>
+        </details>
         <button class="btn-add" onclick="addService()">+ Add Service</button>
       </div>
       <div class="admin-list" id="adminServiceList"></div>
@@ -1537,6 +1627,17 @@ const EMAILJS_TEMPLATE_ID = 'template_27fwi2u';
 const PASS_KEY = 'bv_admin_pass';
 let _data = { projects: [], skills: [], services: [], inbox: [] };
 
+function slugify(text) {
+  if (!text) return '';
+  return text.toString().toLowerCase().trim()
+    .replace(/&/g, '-and-')
+    .replace(/[\s]+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+}
+
 function getPass() { return localStorage.getItem(PASS_KEY) || 'brian2025'; }
 
 function getProjects() { return _data.projects; }
@@ -1550,7 +1651,20 @@ function sbReady() { return sb && typeof sb.from === 'function'; }
 async function sbInsert(table, item) {
   if (!sbReady()) return null;
   const { data, error } = await sb.from(table).insert({ ...item, id: undefined }).select().single();
-  if (error) console.error('Supabase insert error (' + table + '):', error);
+  if (error) {
+    console.error('Supabase insert error (' + table + '):', error);
+    // Retry with base fields only (backward compat if SEO columns don't exist yet)
+    const baseFields = table === 'projects'
+      ? { title: item.title, cat: item.cat, year: item.year, description: item.description, img: item.img, link: item.link }
+      : table === 'services'
+      ? { name: item.name, icon: item.icon, description: item.description }
+      : { ...item };
+    if (JSON.stringify({ ...baseFields, id: undefined }) !== JSON.stringify({ ...item, id: undefined })) {
+      const { data: d2, error: e2 } = await sb.from(table).insert(baseFields).select().single();
+      if (!e2) return d2;
+    }
+    return null;
+  }
   return data;
 }
 
@@ -1739,11 +1853,12 @@ function renderProjects() {
   }
   grid.innerHTML = projects.map((p, i) => {
     const hasImg = isValidImgUrl(p.img);
+    const slug = p.slug || slugify(p.title);
     return `
-    <div class="project-card reveal ${i < 2 ? 'reveal-delay-' + (i + 1) : ''} ${_activeFilter !== 'All' && p.cat !== _activeFilter ? 'hidden' : ''}" data-id="${p.id}" onclick="openProjectModal(${p.id})" style="transition-delay:${i * 0.1}s">
+    <div class="project-card reveal ${i < 2 ? 'reveal-delay-' + (i + 1) : ''} ${_activeFilter !== 'All' && p.cat !== _activeFilter ? 'hidden' : ''}" data-id="${p.id}" data-slug="${slug}" onclick="openProject('${slug}', ${p.id})" style="transition-delay:${i * 0.1}s">
       <div class="project-card-inner">
       ${hasImg
-        ? `<img src="${p.img}" class="project-thumb" alt="${p.title}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" /><div class="project-thumb-placeholder" style="display:none;">🎨</div>`
+        ? `<img src="${p.img}" class="project-thumb" alt="${p.img_alt || p.title}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" /><div class="project-thumb-placeholder" style="display:none;">🎨</div>`
         : `<div class="project-thumb-placeholder">🎨</div>`
       }
       <div class="project-info">
@@ -1774,13 +1889,15 @@ function renderSkills() {
 function renderServices() {
   const grid = document.getElementById('servicesGrid');
   const services = getServices();
-  grid.innerHTML = services.map((s, i) => `
-    <div class="service-card reveal" style="transition-delay:${i * 0.08}s">
+  grid.innerHTML = services.map((s, i) => {
+    const slug = s.slug || slugify(s.name);
+    return `
+    <div class="service-card reveal" style="cursor:pointer; transition-delay:${i * 0.08}s" onclick="openService('${slug}', ${s.id})">
       <div class="service-icon">${s.icon || '✦'}</div>
       <div class="service-name">${s.name}</div>
       ${s.description ? `<div class="service-desc">${s.description}</div>` : ''}
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
   applyMagneticTilt();
 }
 
@@ -1828,7 +1945,7 @@ function renderAdminProjectList() {
     <div class="admin-item">
       <div class="admin-item-info">
         <div class="admin-item-title">${p.title}</div>
-        <div class="admin-item-meta">${p.cat}${p.year ? ' · ' + p.year : ''}</div>
+        <div class="admin-item-meta">${p.cat}${p.year ? ' · ' + p.year : ''}${p.slug ? ' · /projects/' + p.slug : ''}</div>
       </div>
       <button class="btn-delete" onclick="deleteProject(${p.id})">Delete</button>
     </div>
@@ -1860,7 +1977,7 @@ function renderAdminServiceList() {
     <div class="admin-item">
       <div class="admin-item-info">
         <div class="admin-item-title">${s.icon || ''} ${s.name}</div>
-        <div class="admin-item-meta">${s.description || ''}</div>
+        <div class="admin-item-meta">${s.description ? s.description.substring(0,60) + (s.description.length > 60 ? '…' : '') : ''}${s.slug ? ' · /services/' + s.slug : ''}</div>
       </div>
       <button class="btn-delete" onclick="deleteService(${s.id})">Delete</button>
     </div>
@@ -1884,15 +2001,20 @@ function addProject() {
   if (!title) { alert('Please enter a project title.'); return; }
   const urlImg = document.getElementById('pImgUrl').value.trim();
   const imgUrl = isValidImgUrl(urlImg) ? urlImg : (_currentImgData || '');
+  const slug = document.getElementById('pSlug').value.trim() || slugify(title);
   const item = {
     title,
+    slug,
     cat: document.getElementById('pCat').value,
     year: document.getElementById('pYear').value.trim(),
     description: document.getElementById('pDesc').value.trim(),
     img: imgUrl,
+    img_alt: document.getElementById('pImgAlt').value.trim(),
     link: document.getElementById('pLink').value.trim(),
+    seo_title: document.getElementById('pSeoTitle').value.trim(),
+    meta_description: document.getElementById('pMetaDesc').value.trim(),
   };
-  ['pTitle','pYear','pDesc','pLink','pImgUrl'].forEach(id => document.getElementById(id).value = '');
+  ['pTitle','pYear','pDesc','pLink','pImgUrl','pSlug','pSeoTitle','pMetaDesc','pImgAlt'].forEach(id => document.getElementById(id).value = '');
   clearUpload();
   addProjectItem(item);
 }
@@ -1912,12 +2034,16 @@ function addSkill() {
 function addService() {
   const name = document.getElementById('svName').value.trim();
   if (!name) { alert('Please enter a service name.'); return; }
+  const slug = document.getElementById('svSlug').value.trim() || slugify(name);
   const item = {
     name,
+    slug,
     icon: document.getElementById('svIcon').value.trim() || '✦',
     description: document.getElementById('svDesc').value.trim(),
+    seo_title: document.getElementById('svSeoTitle').value.trim(),
+    meta_description: document.getElementById('svMetaDesc').value.trim(),
   };
-  ['svName','svIcon','svDesc'].forEach(id => document.getElementById(id).value = '');
+  ['svName','svIcon','svDesc','svSlug','svSeoTitle','svMetaDesc'].forEach(id => document.getElementById(id).value = '');
   addServiceItem(item);
 }
 
@@ -2013,7 +2139,7 @@ function openProjectModal(id) {
   const hasImg = isValidImgUrl(p.img);
   container.innerHTML = `
     ${hasImg
-      ? `<img src="${p.img}" class="project-modal-img" alt="${p.title}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><div class="project-modal-placeholder" style="display:none;">🎨</div>`
+      ? `<img src="${p.img}" class="project-modal-img" alt="${p.img_alt || p.title}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><div class="project-modal-placeholder" style="display:none;">🎨</div>`
       : `<div class="project-modal-placeholder">🎨</div>`
     }
     <div class="project-modal-cat">${p.cat}${p.year ? ' · ' + p.year : ''}</div>
@@ -2027,6 +2153,121 @@ function openProjectModal(id) {
 function closeProjectModal() {
   closeModal('projectModal');
 }
+
+// ─── CLIENT-SIDE ROUTING ─────────────────────────────────────
+function renderProjectPage(p) {
+  const hasImg = isValidImgUrl(p.img);
+  return `
+    <button class="pv-back" onclick="goHome()">← Back</button>
+    ${hasImg
+      ? `<img src="${p.img}" class="pv-image" alt="${p.img_alt || p.title}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><div class="pv-placeholder" style="display:none;">🎨</div>`
+      : `<div class="pv-placeholder">🎨</div>`
+    }
+    <div class="pv-cat">${p.cat}${p.year ? ' · ' + p.year : ''}</div>
+    <div class="pv-title">${p.seo_title || p.title}</div>
+    ${p.description ? `<div class="pv-desc">${p.description}</div>` : ''}
+    ${p.link ? `<a href="${p.link}" target="_blank" rel="noopener" class="pv-link">View Project →</a>` : ''}
+  `;
+}
+
+function renderServicePage(s) {
+  return `
+    <button class="pv-back" onclick="goHome()">← Back</button>
+    <div style="font-size:3rem; margin-bottom:1rem;">${s.icon || '✦'}</div>
+    <div class="pv-title">${s.seo_title || s.name}</div>
+    <div class="pv-cat">Service</div>
+    ${s.description ? `<div class="pv-desc">${s.description}</div>` : ''}
+    <a href="/#contact" class="pv-link" onclick="event.preventDefault(); goHome(); setTimeout(()=>document.getElementById('contact').scrollIntoView({behavior:'smooth'}),100);">Inquire about this service →</a>
+  `;
+}
+
+function showMainContent() {
+  document.querySelectorAll('section, footer, #pageView').forEach(el => el.style.display = '');
+  document.getElementById('pageView').style.display = 'none';
+  window.scrollTo(0, 0);
+}
+
+function goHome() {
+  window.history.pushState(null, '', '/');
+  showMainContent();
+  document.title = 'VIBI Design | Graphic Designer & Brand Identity Designer in Uganda';
+  document.querySelector('meta[name="description"]').setAttribute('content', 'VIBI Design by Brian Vunni offers graphic design, brand identity, print design, and visual communication services in Uganda.');
+  document.querySelector('meta[property="og:title"]').setAttribute('content', document.title);
+  document.querySelector('meta[property="og:description"]').setAttribute('content', document.querySelector('meta[name="description"]').getAttribute('content'));
+}
+
+function openProject(slug, id) {
+  window.history.pushState(null, '', '/projects/' + slug);
+  const p = _data.projects.find(pr => pr.id === id);
+  if (!p) return;
+  document.querySelectorAll('section, footer').forEach(el => el.style.display = 'none');
+  const pv = document.getElementById('pageView');
+  pv.style.display = 'block';
+  pv.innerHTML = renderProjectPage(p);
+  document.title = (p.seo_title || p.title) + ' | VIBI Design';
+  document.querySelector('meta[name="description"]').setAttribute('content', p.meta_description || p.description || '');
+  document.querySelector('meta[property="og:title"]').setAttribute('content', document.title);
+  document.querySelector('meta[property="og:description"]').setAttribute('content', p.meta_description || p.description || '');
+  window.scrollTo(0, 0);
+}
+
+function openService(slug, id) {
+  window.history.pushState(null, '', '/services/' + slug);
+  const s = _data.services.find(sv => sv.id === id);
+  if (!s) return;
+  document.querySelectorAll('section, footer').forEach(el => el.style.display = 'none');
+  const pv = document.getElementById('pageView');
+  pv.style.display = 'block';
+  pv.innerHTML = renderServicePage(s);
+  document.title = (s.seo_title || s.name) + ' | VIBI Design';
+  document.querySelector('meta[name="description"]').setAttribute('content', s.meta_description || s.description || '');
+  document.querySelector('meta[property="og:title"]').setAttribute('content', document.title);
+  document.querySelector('meta[property="og:description"]').setAttribute('content', s.meta_description || s.description || '');
+  window.scrollTo(0, 0);
+}
+
+function handleRoute() {
+  const path = window.location.pathname;
+  const projectMatch = path.match(/^\/projects\/(.+)/);
+  const serviceMatch = path.match(/^\/services\/(.+)/);
+
+  if (projectMatch) {
+    const slug = projectMatch[1];
+    const p = _data.projects.find(pr => (pr.slug || slugify(pr.title)) === slug);
+    if (p) {
+      document.querySelectorAll('section, footer').forEach(el => el.style.display = 'none');
+      const pv = document.getElementById('pageView');
+      pv.style.display = 'block';
+      pv.innerHTML = renderProjectPage(p);
+      document.title = (p.seo_title || p.title) + ' | VIBI Design';
+      document.querySelector('meta[name="description"]').setAttribute('content', p.meta_description || p.description || '');
+      document.querySelector('meta[property="og:title"]').setAttribute('content', document.title);
+      document.querySelector('meta[property="og:description"]').setAttribute('content', p.meta_description || p.description || '');
+      return true;
+    }
+  }
+
+  if (serviceMatch) {
+    const slug = serviceMatch[1];
+    const s = _data.services.find(sv => (sv.slug || slugify(sv.name)) === slug);
+    if (s) {
+      document.querySelectorAll('section, footer').forEach(el => el.style.display = 'none');
+      const pv = document.getElementById('pageView');
+      pv.style.display = 'block';
+      pv.innerHTML = renderServicePage(s);
+      document.title = (s.seo_title || s.name) + ' | VIBI Design';
+      document.querySelector('meta[name="description"]').setAttribute('content', s.meta_description || s.description || '');
+      document.querySelector('meta[property="og:title"]').setAttribute('content', document.title);
+      document.querySelector('meta[property="og:description"]').setAttribute('content', s.meta_description || s.description || '');
+      return true;
+    }
+  }
+
+  showMainContent();
+  return false;
+}
+
+window.addEventListener('popstate', handleRoute);
 
 // ─── LOGIN ────────────────────────────────────────────────────
 function doLogin() {
@@ -2292,6 +2533,8 @@ loadEmailJSKeys();
   renderServices();
   updateInboxBadge();
   applyMagneticTilt();
+  // handle direct URL route (project/service page)
+  handleRoute();
   // hide loading overlay
   setTimeout(() => document.getElementById('loadingOverlay').classList.add('hidden'), 300);
   // observe reveal elements after render
