@@ -506,7 +506,10 @@
   #work { background: var(--ink); color: var(--white); }
   #work .section-label { color: var(--rose); }
   #work .section-title { color: var(--white); }
-  #work .section-sub { color: rgba(255,255,255,0.5); }
+  #work .section-sub { color: rgba(255,255,255,0.6); }
+  #work .filter-btn { color: rgba(255,255,255,0.55); border-color: rgba(255,255,255,0.15); }
+  #work .filter-btn:hover { border-color: var(--rose); color: var(--rose); }
+  #work .filter-btn.active { background: var(--white); color: var(--ink); border-color: var(--white); }
   .projects-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -559,7 +562,7 @@
     margin-bottom: 0.5rem;
   }
   .project-title { font-family: var(--display); font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; }
-  .project-desc { font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
+  .project-desc { font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.6; }
   .project-link {
     display: inline-block;
     margin-top: 1rem;
@@ -1726,7 +1729,9 @@ async function addProjectItem(item) {
     renderProjects();
     renderAdminProjectList();
     showSuccess('projectSuccess');
+    return true;
   }
+  return false;
 }
 
 async function deleteProject(id) {
@@ -1764,7 +1769,9 @@ async function addServiceItem(item) {
     renderServices();
     renderAdminServiceList();
     showSuccess('serviceSuccess');
+    return true;
   }
+  return false;
 }
 
 async function deleteService(id) {
@@ -2027,7 +2034,7 @@ function previewUrlImg() {
 }
 
 // ─── ADMIN ACTIONS ────────────────────────────────────────────
-function addProject() {
+async function addProject() {
   const title = document.getElementById('pTitle').value.trim();
   if (!title) { alert('Please enter a project title.'); return; }
   const urlImg = document.getElementById('pImgUrl').value.trim();
@@ -2047,7 +2054,8 @@ function addProject() {
   };
   ['pTitle','pYear','pDesc','pLink','pImgUrl','pSlug','pSeoTitle','pMetaDesc','pImgAlt'].forEach(id => document.getElementById(id).value = '');
   clearUpload();
-  addProjectItem(item);
+  const result = await addProjectItem(item);
+  if (!result) alert('Failed to save project. Check console for details.');
 }
 
 function addSkill() {
@@ -2062,7 +2070,7 @@ function addSkill() {
   addSkillItem(item);
 }
 
-function addService() {
+async function addService() {
   const name = document.getElementById('svName').value.trim();
   if (!name) { alert('Please enter a service name.'); return; }
   const slug = document.getElementById('svSlug').value.trim() || slugify(name);
@@ -2075,7 +2083,8 @@ function addService() {
     meta_description: document.getElementById('svMetaDesc').value.trim(),
   };
   ['svName','svIcon','svDesc','svSlug','svSeoTitle','svMetaDesc'].forEach(id => document.getElementById(id).value = '');
-  addServiceItem(item);
+  const result = await addServiceItem(item);
+  if (!result) alert('Failed to save service. Check console for details.');
 }
 
 function changePassword() {
