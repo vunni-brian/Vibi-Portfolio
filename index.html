@@ -646,6 +646,12 @@
   .service-icon { font-size: 2rem; margin-bottom: 1rem; }
   .service-name { font-weight: 700; font-size: 1.05rem; margin-bottom: 0.5rem; }
   .service-desc { font-size: 0.88rem; color: var(--grey); line-height: 1.7; }
+  .services-cta {
+    text-align: center;
+    margin-top: 3.5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--border);
+  }
 
   /* ── CONTACT ── */
   #contact { background: var(--sand); }
@@ -1338,7 +1344,11 @@
   <div class="services-grid" id="servicesGrid">
     <!-- populated by JS -->
   </div>
-  </section>
+  <div class="services-cta reveal">
+    <p style="margin-bottom:1.25rem; color:var(--grey);">Not sure which service fits your project? Let's talk it through.</p>
+    <a href="#contact" class="hero-cta" onclick="event.preventDefault(); document.getElementById('contact').scrollIntoView({behavior:'smooth'});">Start a Project →</a>
+  </div>
+</section>
 
 <!-- CONTACT -->
 <section id="contact">
@@ -1814,8 +1824,8 @@ const DEFAULT_SKILLS = [
   { name: 'Adobe Photoshop', icon: '🖼️', description: 'Photo editing & compositing' },
   { name: 'Adobe InDesign', icon: '📰', description: 'Print layouts & publications' },
   { name: 'Figma', icon: '🖥️', description: 'UI design & prototyping' },
-  { name: 'Canva Pro', icon: '✨', description: 'Quick design & social graphics' },
   { name: 'Branding', icon: '💼', description: 'Identity systems & brand strategy' },
+  { name: 'Motion Design', icon: '🎬', description: 'Animated graphics & visual storytelling' },
   { name: 'Typography', icon: '✍️', description: 'Typeface selection & hierarchy' },
   { name: 'Print Design', icon: '🖨️', description: 'Ready-for-press artwork & files' },
 ];
@@ -1826,17 +1836,22 @@ const DEFAULT_SERVICES = [
   { name: 'Social Media', icon: '📱', description: 'Custom graphics for Instagram, LinkedIn, and X.' },
   { name: 'Packaging', icon: '📦', description: 'Product packaging design from concept to final file.' },
   { name: 'UI Design', icon: '🖥️', description: 'Clean, user-friendly interface designs for web & mobile.' },
+  { name: 'Illustration', icon: '✍️', description: 'Custom illustrations, icons, and hand-drawn graphics for digital & print.' },
 ];
 
 async function seedDefaults() {
   if (!sbReady()) return;
-  if (_data.skills.length === 0) {
-    const { data } = await sb.from('skills').insert(DEFAULT_SKILLS).select();
-    if (data) _data.skills = data;
+  const existingSkillNames = new Set(_data.skills.map(s => s.name));
+  const missingSkills = DEFAULT_SKILLS.filter(s => !existingSkillNames.has(s.name));
+  if (missingSkills.length > 0) {
+    const { data } = await sb.from('skills').insert(missingSkills).select();
+    if (data) _data.skills = [..._data.skills, ...data];
   }
-  if (_data.services.length === 0) {
-    const { data } = await sb.from('services').insert(DEFAULT_SERVICES).select();
-    if (data) _data.services = data;
+  const existingServiceNames = new Set(_data.services.map(s => s.name));
+  const missingServices = DEFAULT_SERVICES.filter(s => !existingServiceNames.has(s.name));
+  if (missingServices.length > 0) {
+    const { data } = await sb.from('services').insert(missingServices).select();
+    if (data) _data.services = [..._data.services, ...data];
   }
   renderSkills();
   renderServices();
@@ -2561,17 +2576,64 @@ loadEmailJSKeys();
   _data.inbox    = await sbLoadAll('inbox');
   console.log('Supabase loaded — projects:', _data.projects.length, 'skills:', _data.skills.length, 'services:', _data.services.length, 'inbox:', _data.inbox.length);
 
-  // Fallback sample project if none exist
+  // Fallback sample projects if none exist
   if (_data.projects.length === 0) {
-    _data.projects.push({
-      id: Date.now(),
-      title: 'AfroNation Kampala 2025',
-      cat: 'Event',
-      year: '2025',
-      description: 'Vibrant festival flyer design featuring bold Afro-centric typography, warm earth tones, and dynamic grid layout. Captures the energy of Uganda\'s premier music and culture festival.',
-      img: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&q=75&fm=webp',
-      link: '',
-    });
+    _data.projects.push(
+      {
+        id: Date.now(),
+        title: 'Kawa Coffee — Brand Identity',
+        cat: 'Brand Identity',
+        year: '2025',
+        description: 'Complete brand identity for a specialty coffee roastery: logo system, packaging, stationery, and brand guidelines. Warm earth tones meet modern minimalism.',
+        img: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=600&q=75&fm=webp',
+        link: '',
+      },
+      {
+        id: Date.now() + 1,
+        title: 'Urban Edge Magazine — Layout',
+        cat: 'Print Design',
+        year: '2024',
+        description: 'Full editorial layout and print production for a 64-page culture magazine. Grid-driven typography, custom pull-quotes, and photo-led spreads.',
+        img: 'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=600&q=75&fm=webp',
+        link: '',
+      },
+      {
+        id: Date.now() + 2,
+        title: 'Bloom Skincare — Social Campaign',
+        cat: 'Social Media',
+        year: '2024',
+        description: 'Quarterly social media campaign with custom illustration, template system, and animated stories. Consistent visual language across Instagram, LinkedIn, and X.',
+        img: 'https://images.unsplash.com/photo-1612817288484-6f916006741a?w=600&q=75&fm=webp',
+        link: '',
+      },
+      {
+        id: Date.now() + 3,
+        title: 'Moyo Chocolate — Packaging',
+        cat: 'Packaging',
+        year: '2025',
+        description: 'Luxury chocolate bar packaging line featuring hand-drawn cocoa motifs, foil stamping, and sustainable materials. Three SKUs with a cohesive shelf presence.',
+        img: 'https://images.unsplash.com/photo-1545235617-9465d2a55698?w=600&q=75&fm=webp',
+        link: '',
+      },
+      {
+        id: Date.now() + 4,
+        title: 'AfriMarket — App UI',
+        cat: 'UI Design',
+        year: '2024',
+        description: 'User interface design for a mobile marketplace connecting local farmers to buyers. Clean information architecture, accessible components, and offline-first flows.',
+        img: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&q=75&fm=webp',
+        link: '',
+      },
+      {
+        id: Date.now() + 5,
+        title: 'AfroNation Kampala 2025',
+        cat: 'Event',
+        year: '2025',
+        description: 'Vibrant festival flyer design featuring bold Afro-centric typography, warm earth tones, and dynamic grid layout. Captures the energy of Uganda\'s premier music and culture festival.',
+        img: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&q=75&fm=webp',
+        link: '',
+      }
+    );
   }
 
   await seedDefaults();
