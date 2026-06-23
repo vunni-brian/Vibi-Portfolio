@@ -31,7 +31,8 @@ function htmlPage(title, description, content) {
 <meta name="twitter:title" content="${title} | Vibi Design" />
 <meta name="twitter:description" content="${description}" />
 <meta name="twitter:image" content="https://vibi-design.vercel.app/og-image.png" />
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎨</text></svg>" />
+<link rel="icon" type="image/png" href="https://vibi-design.vercel.app/favicon.png" />
+<link rel="apple-touch-icon" href="https://vibi-design.vercel.app/favicon.png" />
 <style>
   body { font-family: system-ui, -apple-system, sans-serif; max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem; color: #111; line-height: 1.6; background: #F9F9F7; }
   img { max-width: 100%; border-radius: 12px; margin-bottom: 1.5rem; }
