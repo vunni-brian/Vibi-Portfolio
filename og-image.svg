@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#F9F9F7"/>
+  <rect x="0" y="0" width="1200" height="630" fill="url(#grain)" opacity="0.03"/>
+  <defs>
+    <filter id="noise">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+    <pattern id="grain" width="200" height="200" patternUnits="userSpaceOnUse">
+      <rect width="200" height="200" fill="none"/>
+      <rect width="200" height="200" filter="url(#noise)" opacity="0.5"/>
+    </pattern>
+  </defs>
+  <circle cx="900" cy="200" r="300" fill="#7A9E7A" opacity="0.06"/>
+  <circle cx="950" cy="180" r="200" fill="#7A9E7A" opacity="0.04"/>
+  <text x="80" y="220" font-family="Georgia, 'Times New Roman', serif" font-size="88" font-weight="300" fill="#111110">VIBI</text>
+  <text x="80" y="310" font-family="Georgia, 'Times New Roman', serif" font-size="88" font-weight="300" font-style="italic" fill="#7A9E7A">Design</text>
+  <text x="80" y="390" font-family="system-ui, sans-serif" font-size="24" font-weight="400" fill="#6B6B69" letter-spacing="1">Graphic Designer &amp; Brand Identity Designer</text>
+  <text x="80" y="430" font-family="system-ui, sans-serif" font-size="20" font-weight="300" fill="#6B6B69" letter-spacing="0.5">Kampala, Uganda · Available Worldwide</text>
+  <line x1="80" y1="480" x2="400" y2="480" stroke="#7A9E7A" stroke-width="2" opacity="0.4"/>
+  <text x="80" y="530" font-family="monospace" font-size="16" fill="#7A9E7A" letter-spacing="2">vibi.vercel.app</text>
+</svg>
