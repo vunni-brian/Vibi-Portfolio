@@ -77,7 +77,20 @@
     border-radius: 4px;
   }
 
+  a { color: inherit; }
+  a:not(.nav-links a):not(.nav-overlay-links a):not(.nav-cta):not(.hero-cta):not(.project-link):not(.pv-link):not(.filter-btn):not(.back-link):not(.pv-back) {
+    text-decoration: underline;
+    text-decoration-color: var(--rose);
+    text-underline-offset: 2px;
+  }
+
   img { max-width: 100%; height: auto; }
+
+  .project-thumb, .project-modal-img, .pv-image, .img-preview {
+    aspect-ratio: 16/10;
+    object-fit: cover;
+    width: 100%;
+  }
 
   .sr-only {
     position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
@@ -1618,7 +1631,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
 // ─── SUPABASE ─────────────────────────────────────────────────
 const SUPABASE_URL = 'https://zzxzejaadftxlxbrrokq.supabase.co';
@@ -2368,18 +2380,25 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
   const _pub = localStorage.getItem('bv_ej_pub') || EMAILJS_PUBLIC_KEY;
   const _svc = localStorage.getItem('bv_ej_svc') || EMAILJS_SERVICE_ID;
   const _tpl = localStorage.getItem('bv_ej_tpl') || EMAILJS_TEMPLATE_ID;
-  if (typeof emailjs !== 'undefined' && _pub !== 'YOUR_PUBLIC_KEY') {
-    emailjs.init({ publicKey: _pub });
-    emailjs.send(_svc, _tpl, templateParams)
-      .then(function() {
-        showFormSuccess();
-      })
-      .catch(function(err) {
-        console.warn('EmailJS error:', err);
-        showFormSuccess();
-      });
+
+  function trySend() {
+    if (typeof emailjs !== 'undefined' && _pub !== 'YOUR_PUBLIC_KEY') {
+      emailjs.init({ publicKey: _pub });
+      emailjs.send(_svc, _tpl, templateParams)
+        .then(function() { showFormSuccess(); })
+        .catch(function(err) { console.warn('EmailJS error:', err); showFormSuccess(); });
+    } else {
+      showFormSuccess();
+    }
+  }
+
+  if (typeof emailjs === 'undefined') {
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
+    s.onload = trySend;
+    document.body.appendChild(s);
   } else {
-    showFormSuccess();
+    trySend();
   }
 
   btn.innerHTML = 'Send Message<span class="btn-send-arrow"><span class="btn-send-arrow-inner">→</span></span>';
@@ -2541,7 +2560,7 @@ loadEmailJSKeys();
       cat: 'Event',
       year: '2025',
       description: 'Vibrant festival flyer design featuring bold Afro-centric typography, warm earth tones, and dynamic grid layout. Captures the energy of Uganda\'s premier music and culture festival.',
-      img: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80',
+      img: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&q=75&fm=webp',
       link: '',
     });
   }
