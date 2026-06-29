@@ -1,6 +1,7 @@
 const SUPABASE_URL = 'https://zzxzejaadftxlxbrrokq.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_FnCeVt2d8VN5o02pGIEoAg_YjL9eygs';
 const SITE = 'https://vibi-design.vercel.app';
+const GA_ID = 'G-GQ795B3WBE';
 
 function escapeXml(str) {
   return (str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');

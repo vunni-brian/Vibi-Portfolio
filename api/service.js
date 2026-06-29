@@ -14,23 +14,41 @@ function slugify(text) {
 
 function htmlPage(title, description, content) {
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="en-UG">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>${title} | Vibi Design</title>
-<meta name="description" content="${description}" />
+<meta name="theme-color" content="#F9F9F7" />
 <meta name="robots" content="index, follow" />
+<title>${title} | Vibi</title>
+<meta name="description" content="${description}" />
 <link rel="canonical" href="https://vibi-design.vercel.app${content.url}" />
+<link rel="alternate" hreflang="en-UG" href="https://vibi-design.vercel.app${content.url}" />
+<link rel="alternate" hreflang="x-default" href="https://vibi-design.vercel.app${content.url}" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GQ795B3WBE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-GQ795B3WBE');
+</script>
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://vibi-design.vercel.app${content.url}" />
-<meta property="og:title" content="${title} | Vibi Design" />
+<meta property="og:title" content="${title} | Vibi" />
 <meta property="og:description" content="${description}" />
 <meta property="og:image" content="https://vibi-design.vercel.app/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="${title} — Vibi Service" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:site_name" content="Vibi" />
+<meta property="og:locale" content="en_UG" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="${title} | Vibi Design" />
+<meta name="twitter:title" content="${title} | Vibi" />
 <meta name="twitter:description" content="${description}" />
 <meta name="twitter:image" content="https://vibi-design.vercel.app/og-image.png" />
+<meta name="twitter:image:alt" content="${title} — Vibi Service" />
 <link rel="icon" type="image/png" href="https://vibi-design.vercel.app/favicon.png" />
 <link rel="apple-touch-icon" href="https://vibi-design.vercel.app/favicon.png" />
 <style>
@@ -45,10 +63,10 @@ function htmlPage(title, description, content) {
 </style>
 </head>
 <body>
-  <a href="https://vibi-design.vercel.app/" style="color:#999;text-decoration:none;font-size:0.85rem;margin-bottom:2rem;display:inline-block;">← Back to Vibi Design</a>
+  <a href="https://vibi-design.vercel.app/" style="color:#999;text-decoration:none;font-size:0.85rem;margin-bottom:2rem;display:inline-block;">← Back to Vibi</a>
   ${content.body}
   <div class="footer">
-    <p>Vibi Design by Brian Vunni — Kampala, Uganda</p>
+    <p>Vibi by Brian Vunni — Kampala, Uganda</p>
   </div>
 </body>
 </html>`;
@@ -73,7 +91,7 @@ export default async function handler(req, res) {
   }
 
   const title = s.seo_title || s.name;
-  const desc = s.meta_description || s.description || 'A service by Vibi Design';
+  const desc = s.meta_description || s.description || 'A service by Vibi';
 
   const body = `
     <div class="icon">${s.icon || '✦'}</div>
